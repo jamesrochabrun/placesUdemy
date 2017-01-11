@@ -22,7 +22,7 @@ class AddPlaceVC: UITableViewController, UITextFieldDelegate {
     var rating: String?
     let defaultColor = #colorLiteral(red: 0.1098039216, green: 0.6392156863, blue: 0.7843137255, alpha: 1)
     let selectedColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-    
+    var place: Place?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,8 +61,8 @@ class AddPlaceVC: UITableViewController, UITextFieldDelegate {
             let image = self.imageview.image,
             let rating = self.rating {
             
-            let place = Place(name: name, type: type, location: direction, image: image, telephone: telephone, web: website)
-            place.rating = rating
+            self.place = Place(name: name, type: type, location: direction, image: image, telephone: telephone, web: website)
+            self.place?.rating = rating
             
             self.performSegue(withIdentifier: "unwindToMainVC", sender: self)
             
@@ -98,10 +98,6 @@ class AddPlaceVC: UITableViewController, UITextFieldDelegate {
             break
         }
     }
-    
-    
-    
-
 }
 
 extension AddPlaceVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
