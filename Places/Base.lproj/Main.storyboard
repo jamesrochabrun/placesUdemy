@@ -92,7 +92,7 @@
                     <navigationItem key="navigationItem" id="K5q-tT-tcB">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="jOg-5z-bVQ">
                             <connections>
-                                <segue destination="2Tr-by-u8t" kind="presentation" id="N6k-rf-0uT"/>
+                                <segue destination="2Tr-by-u8t" kind="presentation" identifier="addPlace" id="N6k-rf-0uT"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -102,10 +102,10 @@
             </objects>
             <point key="canvasLocation" x="1020" y="-64.31784107946028"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Add PlaceVC-->
         <scene sceneID="GZf-2r-bfw">
             <objects>
-                <tableViewController id="Baf-5u-yyK" sceneMemberID="viewController">
+                <tableViewController id="Baf-5u-yyK" customClass="AddPlaceVC" customModule="Places" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="mJN-2L-L8g">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -363,6 +363,9 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="oGb-w3-m7V"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="imageview" destination="YHc-S7-JLi" id="4Nn-t6-vMo"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8dF-l0-V51" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="O1d-20-bMJ" userLabel="Exit" sceneMemberID="exit"/>

@@ -19,6 +19,7 @@
 		7B1822C21E247E5A00FDF3E3 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1822C11E247E5A00FDF3E3 /* Place.swift */; };
 		7B1822C81E25A92E00FDF3E3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B1822C71E25A92E00FDF3E3 /* MapKit.framework */; };
 		7B1822CA1E25AA4000FDF3E3 /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1822C91E25AA4000FDF3E3 /* MapVC.swift */; };
+		7B1822CC1E25C0C100FDF3E3 /* AddPlaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1822CB1E25C0C100FDF3E3 /* AddPlaceVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		7B1822C11E247E5A00FDF3E3 /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		7B1822C71E25A92E00FDF3E3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		7B1822C91E25AA4000FDF3E3 /* MapVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
+		7B1822CB1E25C0C100FDF3E3 /* AddPlaceVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPlaceVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				7B1822A91E247B6400FDF3E3 /* MainVC.swift */,
 				7B1822BD1E247E1700FDF3E3 /* DetailVC.swift */,
 				7B1822BB1E247E1700FDF3E3 /* ReviewVC.swift */,
+				7B1822CB1E25C0C100FDF3E3 /* AddPlaceVC.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -199,6 +202,7 @@
 				7B1822AA1E247B6400FDF3E3 /* MainVC.swift in Sources */,
 				7B1822BF1E247E1700FDF3E3 /* PlaceDetailCell.swift in Sources */,
 				7B1822BA1E247D7C00FDF3E3 /* PlaceCell.swift in Sources */,
+				7B1822CC1E25C0C100FDF3E3 /* AddPlaceVC.swift in Sources */,
 				7B1822BE1E247E1700FDF3E3 /* ReviewVC.swift in Sources */,
 				7B1822A81E247B6400FDF3E3 /* AppDelegate.swift in Sources */,
 				7B1822CA1E25AA4000FDF3E3 /* MapVC.swift in Sources */,
