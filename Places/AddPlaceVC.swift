@@ -50,6 +50,15 @@ extension AddPlaceVC: UIImagePickerControllerDelegate, UINavigationControllerDel
         self.imageview.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         self.imageview.contentMode = .scaleAspectFill
         self.imageview.clipsToBounds = true
+        let leadingConstraint = NSLayoutConstraint(item: self.imageview, attribute: .leading, relatedBy: .equal, toItem: self.imageview.superview, attribute: .leading, multiplier: 1, constant: 0)
+        leadingConstraint.isActive = true
+        let trailingConstraint = NSLayoutConstraint(item: self.imageview, attribute: .trailing, relatedBy: .equal, toItem: self.imageview.superview, attribute: .trailing, multiplier: 1, constant: 0)
+        trailingConstraint.isActive = true
+        let topConstraint = NSLayoutConstraint(item: self.imageview, attribute: .top, relatedBy: .equal, toItem: self.imageview.superview, attribute: .top, multiplier: 1, constant: 0)
+        topConstraint.isActive = true
+        let bottomConstraint = NSLayoutConstraint(item: self.imageview, attribute: .bottom, relatedBy: .equal, toItem: self.imageview.superview, attribute: .bottom, multiplier: 1, constant: 0)
+        bottomConstraint.isActive = true
+        
         dismiss(animated: true, completion: nil)
     }
     
