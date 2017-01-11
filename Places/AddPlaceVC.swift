@@ -8,12 +8,31 @@
 
 import UIKit
 
-class AddPlaceVC: UITableViewController {
+class AddPlaceVC: UITableViewController, UITextFieldDelegate {
 
+    @IBOutlet weak var textfieldName: UITextField!
+    @IBOutlet weak var textfieldType: UITextField!
+    @IBOutlet weak var textfieldAddress: UITextField!
+    @IBOutlet weak var textfieldPhone: UITextField!
+    @IBOutlet weak var textfieldWeb: UITextField!
     @IBOutlet weak var imageview: UIImageView!
+    @IBOutlet weak var dislikeButton: UIButton!
+    @IBOutlet weak var loveButton: UIButton!
+    @IBOutlet weak var likeButton: UIButton!
+    var rating: String?
+    let defaultColor = #colorLiteral(red: 0.1098039216, green: 0.6392156863, blue: 0.7843137255, alpha: 1)
+    let selectedColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.textfieldName.delegate = self
+        self.textfieldType.delegate = self
+        self.textfieldWeb.delegate = self
+        self.textfieldPhone.delegate = self
+        self.textfieldAddress.delegate = self
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -25,6 +44,63 @@ class AddPlaceVC: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    @IBAction func savePressed(_ sender: UIBarButtonItem) {
+        
+        
+        if let name = self.textfieldName.text,
+            let type = self.textfieldType.text,
+            let direction = self.textfieldAddress.text,
+            let telephone = self.textfieldPhone.text,
+            let website = self.textfieldWeb.text,
+            let image = self.imageview.image,
+            let rating = self.rating {
+            
+            let place = Place(name: name, type: type, location: direction, image: image, telephone: telephone, web: website)
+            place.rating = rating
+            
+            self.performSegue(withIdentifier: "unwindToMainVC", sender: self)
+            
+        } else {
+            
+            let alertController = UIAlertController(title: "missing data", message: "review it", preferredStyle: .alert)
+            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(ok)
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
+    }
+    
+    @IBAction func reatingPressed(_ sender: UIButton) {
+        
+        switch sender.tag {
+        case 0:
+            self.rating = "dislike"
+            self.likeButton.backgroundColor = defaultColor
+            self.dislikeButton.backgroundColor = selectedColor
+            self.loveButton.backgroundColor = defaultColor
+        case 1:
+            self.rating = "good"
+            self.likeButton.backgroundColor = selectedColor
+            self.dislikeButton.backgroundColor = defaultColor
+            self.loveButton.backgroundColor = defaultColor
+        case 2:
+            self.rating = "great"
+            self.likeButton.backgroundColor = defaultColor
+            self.dislikeButton.backgroundColor = defaultColor
+            self.loveButton.backgroundColor = selectedColor
+        default:
+            break
+        }
+    }
+    
+    
+    
 
 }
 

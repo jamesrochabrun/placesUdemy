@@ -314,24 +314,33 @@
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VKJ-ak-epB">
                                                             <rect key="frame" x="0.0" y="0.0" width="111.5" height="38"/>
-                                                            <color key="backgroundColor" red="1" green="0.43921568630000002" blue="0.41568627450000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="backgroundColor" red="0.84940000000000004" green="0.84940000000000004" blue="0.84940000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <state key="normal" title="dislike">
                                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </state>
+                                                            <connections>
+                                                                <action selector="reatingPressed:" destination="Baf-5u-yyK" eventType="touchUpInside" id="8Sp-cd-1tC"/>
+                                                            </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7vf-qS-hx2">
+                                                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7vf-qS-hx2">
                                                             <rect key="frame" x="123.5" y="0.0" width="112" height="38"/>
-                                                            <color key="backgroundColor" red="0.77826333979039408" green="0.9882582426071167" blue="0.59024530361737182" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <color key="backgroundColor" red="0.84940000000000004" green="0.84940000000000004" blue="0.84940000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <state key="normal" title="like">
                                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </state>
+                                                            <connections>
+                                                                <action selector="reatingPressed:" destination="Baf-5u-yyK" eventType="touchUpInside" id="ncY-XD-4Oi"/>
+                                                            </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OUq-3X-LWo">
+                                                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OUq-3X-LWo">
                                                             <rect key="frame" x="247.5" y="0.0" width="111.5" height="38"/>
-                                                            <color key="backgroundColor" red="0.10980392160000001" green="0.63921568630000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="backgroundColor" red="0.82352941180000006" green="0.82352941180000006" blue="0.82352941180000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <state key="normal" title="love it">
                                                                 <color key="titleColor" red="0.97254901959999995" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
+                                                            <connections>
+                                                                <action selector="reatingPressed:" destination="Baf-5u-yyK" eventType="touchUpInside" id="Jff-p5-IBz"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                 </stackView>
@@ -357,13 +366,25 @@
                     <navigationItem key="navigationItem" id="lvh-ke-AHS">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="KG5-px-2aP">
                             <connections>
-                                <segue destination="O1d-20-bMJ" kind="unwind" unwindAction="unwindToMainVCWithSegue:" id="WpX-pT-kef"/>
+                                <segue destination="O1d-20-bMJ" kind="unwind" identifier="unwindToMainVC" unwindAction="unwindToMainVCWithSegue:" id="WpX-pT-kef"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="oGb-w3-m7V"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="oGb-w3-m7V">
+                            <connections>
+                                <action selector="savePressed:" destination="Baf-5u-yyK" id="zid-fz-n6m"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="dislikeButton" destination="VKJ-ak-epB" id="rAg-h3-GHa"/>
                         <outlet property="imageview" destination="YHc-S7-JLi" id="4Nn-t6-vMo"/>
+                        <outlet property="likeButton" destination="7vf-qS-hx2" id="ePb-yX-fmA"/>
+                        <outlet property="loveButton" destination="OUq-3X-LWo" id="awd-4W-a99"/>
+                        <outlet property="textfieldAddress" destination="Yhh-bN-34K" id="Wjr-10-0gc"/>
+                        <outlet property="textfieldName" destination="ZDG-1q-ZLE" id="jEO-VT-1mz"/>
+                        <outlet property="textfieldPhone" destination="gtE-ML-5CT" id="lPb-3C-dTA"/>
+                        <outlet property="textfieldType" destination="BU0-E0-VjM" id="wtj-9V-zSS"/>
+                        <outlet property="textfieldWeb" destination="Rjl-2t-vXG" id="oAw-jg-MOW"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8dF-l0-V51" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -384,11 +405,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="r62-Lb-rfc">
-                                <rect key="frame" x="0.0" y="67" width="375" height="300"/>
+                                <rect key="frame" x="0.0" y="67" width="375" height="256"/>
                                 <color key="backgroundColor" red="0.4549019608" green="1" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="W9k-j7-kPG">
-                                <rect key="frame" x="0.0" y="365" width="375" height="302"/>
+                                <rect key="frame" x="0.0" y="365" width="375" height="258"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="detailCell" id="1SQ-Hf-wcY" customClass="PlaceDetailCell" customModule="Places" customModuleProvider="target">
@@ -602,7 +623,7 @@
                         <constraints>
                             <constraint firstItem="BzR-or-zct" firstAttribute="top" secondItem="hCO-aL-QIK" secondAttribute="top" id="VxI-lB-yFX"/>
                             <constraint firstItem="BzR-or-zct" firstAttribute="leading" secondItem="hCO-aL-QIK" secondAttribute="leading" id="b4D-QI-2UL"/>
-                            <constraint firstItem="BsI-WN-0vF" firstAttribute="top" secondItem="BzR-or-zct" secondAttribute="bottom" id="c6O-jD-443"/>
+                            <constraint firstItem="BsI-WN-0vF" firstAttribute="top" secondItem="BzR-or-zct" secondAttribute="bottom" constant="-44" id="c6O-jD-443"/>
                             <constraint firstAttribute="trailing" secondItem="BzR-or-zct" secondAttribute="trailing" id="lPy-ks-TW9"/>
                         </constraints>
                     </view>
