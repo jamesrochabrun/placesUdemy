@@ -109,6 +109,7 @@ class MainVC: UITableViewController {
         }
         shareAction.backgroundColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
         
+        
         let deleteAction = UITableViewRowAction(style: .destructive, title: "delete") { (action, indexPath) in
             
             self.places.remove(at: indexPath.row)
@@ -137,35 +138,10 @@ class MainVC: UITableViewController {
         
     }
     
+    @IBAction func unwindToMainVC(segue: UIStoryboardSegue) {
+        
+    }
     
-    
-    
-    
-    
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    
+
     
 }

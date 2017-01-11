@@ -56,19 +56,20 @@ class DetailVC: UIViewController {
                 self.ratingbutton.setImage(UIImage(named: self.place.rating), for:.normal)
             }
         }
-        
     }
     
-
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "showMap" {
+            let destinationVC = segue.destination as! MapVC
+            destinationVC.place = self.place
+        }
     }
-    */
+
 
 }
 
@@ -113,7 +114,16 @@ extension DetailVC: UITableViewDataSource {
 
 extension DetailVC: UITableViewDelegate {
     
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 2:
+            //geolocation stuf
+            self.performSegue(withIdentifier: "showMap", sender: nil)
+            
+        default:
+            break
+        }
+    }
     
 }
 
