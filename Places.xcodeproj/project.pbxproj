@@ -20,6 +20,7 @@
 		7B1822C81E25A92E00FDF3E3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B1822C71E25A92E00FDF3E3 /* MapKit.framework */; };
 		7B1822CA1E25AA4000FDF3E3 /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1822C91E25AA4000FDF3E3 /* MapVC.swift */; };
 		7B1822CC1E25C0C100FDF3E3 /* AddPlaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1822CB1E25C0C100FDF3E3 /* AddPlaceVC.swift */; };
+		7B7829731E26E5D200BC253F /* Place.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7B7829711E26E5D100BC253F /* Place.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		7B1822C71E25A92E00FDF3E3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		7B1822C91E25AA4000FDF3E3 /* MapVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		7B1822CB1E25C0C100FDF3E3 /* AddPlaceVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPlaceVC.swift; sourceTree = "<group>"; };
+		7B7829721E26E5D200BC253F /* Place.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Place.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				7B1822A71E247B6400FDF3E3 /* AppDelegate.swift */,
+				7B7829711E26E5D100BC253F /* Place.xcdatamodeld */,
 				7B1822C31E24848100FDF3E3 /* Model */,
 				7B1822C41E24848B00FDF3E3 /* View */,
 				7B1822C51E2484B300FDF3E3 /* Controller */,
@@ -200,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B1822AA1E247B6400FDF3E3 /* MainVC.swift in Sources */,
+				7B7829731E26E5D200BC253F /* Place.xcdatamodeld in Sources */,
 				7B1822BF1E247E1700FDF3E3 /* PlaceDetailCell.swift in Sources */,
 				7B1822BA1E247D7C00FDF3E3 /* PlaceCell.swift in Sources */,
 				7B1822CC1E25C0C100FDF3E3 /* AddPlaceVC.swift in Sources */,
@@ -371,8 +375,22 @@
 				7B1822B81E247B6400FDF3E3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7B7829711E26E5D100BC253F /* Place.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7B7829721E26E5D200BC253F /* Place.xcdatamodel */,
+			);
+			currentVersion = 7B7829721E26E5D200BC253F /* Place.xcdatamodel */;
+			path = Place.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 7B18229C1E247B6400FDF3E3 /* Project object */;
 }

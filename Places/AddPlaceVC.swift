@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class AddPlaceVC: UITableViewController, UITextFieldDelegate {
 
@@ -61,9 +62,27 @@ class AddPlaceVC: UITableViewController, UITextFieldDelegate {
             let image = self.imageview.image,
             let rating = self.rating {
             
-            self.place = Place(name: name, type: type, location: direction, image: image, telephone: telephone, web: website)
-            self.place?.rating = rating
-            
+            //save in coredata
+            if let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
+                
+                let context = container.viewContext
+                
+                self.place = NSEntityDescription.insertNewObject(forEntityName: "Place", into: context) as? Place
+                self.place?.name = name
+                self.place?.type = type
+                self.place?.location = direction
+                self.place?.phone = telephone
+                self.place?.web = website
+                self.place?.rating = rating
+                self.place?.image = UIImagePNGRepresentation(image) as NSData?
+
+                do {
+                    try context.save()
+                } catch {
+                    print("error to save place in core data")
+                }
+            }
+                        
             self.performSegue(withIdentifier: "unwindToMainVC", sender: self)
             
         } else {

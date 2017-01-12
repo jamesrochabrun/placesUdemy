@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import CoreData
 
 class MainVC: UITableViewController {
     
     var places: [Place] = []
+    var fetchResultsController : NSFetchedResultsController<Place>!
     
     
     override func viewDidLoad() {
@@ -20,23 +22,45 @@ class MainVC: UITableViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.hidesBarsOnSwipe = true
         
-        var place = Place(name: "usa", type: "America", location: "15 el pulgar", image:#imageLiteral(resourceName: "sasha"), telephone:"5555", web: "http://www.deemelo.com")
-        places.append(place)
+        //step 2
+        //initialize the fetchresultcontroller 
+        let fetchRequest: NSFetchRequest<Place> = NSFetchRequest(entityName: "Place")
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
         
-        place = Place(name: "cuba", type: "America", location: "18 el pulgar", image: #imageLiteral(resourceName: "sasha"), telephone:"5558", web: "http://www.deemelo.com")
-        places.append(place)
-    
-        place = Place(name: "india", type: "Africa", location: "100 el pulgar", image: #imageLiteral(resourceName: "sasha"), telephone:"5559", web: "http://www.deemelo.com")
-        places.append(place)
+        //step 3 changes step 1 adding the delegate
+        if let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
+            
+            let context = container.viewContext
+            self.fetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+            self.fetchResultsController.delegate = self
+            
+            do {
+                try fetchResultsController.performFetch()
+                self.places = fetchResultsController.fetchedObjects!
+            } catch {
+                print("Error: \(error.localizedDescription)")
+            }
+        }
         
-        place = Place(name: "Peru", type: "America", location: "200 el pulgar", image: #imageLiteral(resourceName: "sasha"), telephone:"5550", web: "http://www.deemelo.com")
-        places.append(place)
+        //step 1
+        //fetch data from coredata
+//        if let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
+//            
+//            let context = container.viewContext
+//            //opcion A
+//            let request: NSFetchRequest<Place> = NSFetchRequest(entityName: "Place")
+//            //opcion B if we create a subclass
+//            // let request: NSFetchRequest<Place> = Place.fetchRequest() as! NSFetchRequest<Place>
+//            
+//            do {
+//                self.places = try context.fetch(request)
+//
+//            } catch {
+//                print("Error: \(error)")
+//            }
+//        }
         
-        place = Place(name: "Chile", type: "America", location: "450 rockridge", image: #imageLiteral(resourceName: "sasha"), telephone:"5557", web: "http://www.deemelo.com")
-        places.append(place)
-        
-        place = Place(name: "China", type: "Asia", location: "300 bronx", image: #imageLiteral(resourceName: "sasha"), telephone:"55557654", web: "http://www.deemelo.com")
-        places.append(place)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,7 +93,7 @@ class MainVC: UITableViewController {
         // Configure the cell...
         let place = places[indexPath.row]
         cell.titleLabel.text = place.name
-        cell.avatarView.image = place.image
+        cell.avatarView.image = UIImage(data: place.image as! Data)
         cell.subTitleLabel.text = place.location
         cell.thirdLabel.text = place.type
         
@@ -101,7 +125,7 @@ class MainVC: UITableViewController {
             let place = self.places[indexPath.row]
             let sharedefaultText = "i like the place of \(place.name)"
             
-            let activityController = UIActivityViewController(activityItems: [sharedefaultText,place.image],applicationActivities: nil)
+            let activityController = UIActivityViewController(activityItems: [sharedefaultText,UIImage(data:place.image as! Data)!],applicationActivities: nil)
             
             DispatchQueue.main.async { [weak self] in
                 self?.present(activityController, animated: true, completion: nil)
@@ -112,9 +136,18 @@ class MainVC: UITableViewController {
         
         let deleteAction = UITableViewRowAction(style: .destructive, title: "delete") { (action, indexPath) in
             
-            self.places.remove(at: indexPath.row)
-            DispatchQueue.main.async {
-                tableView.deleteRows(at: [indexPath], with: .fade)
+            //delete coredata
+            if let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
+                
+                let context = container.viewContext
+                let placeToDelete = self.fetchResultsController.object(at: indexPath)
+                context.delete(placeToDelete)
+                
+                do {
+                    try context.save()
+                } catch {
+                    print("Error: \(error.localizedDescription)")
+                }
             }
         }
         
@@ -143,20 +176,59 @@ class MainVC: UITableViewController {
         if segue.identifier == "unwindToMainVC" {
             if let addPlaceVC = segue.source as? AddPlaceVC {
                 if let newPlace =  addPlaceVC.place {
-                self.places.append(newPlace)
-                self.tableView.reloadData()
+                    self.places.append(newPlace)
                 }
             }
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
+}
 
+
+//step 4
+extension MainVC: NSFetchedResultsControllerDelegate {
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        switch type {
+        case .insert:
+            if let  newIndexPath = newIndexPath {
+                self.tableView.insertRows(at: [newIndexPath], with: .fade)
+            }
+        case .delete:
+            if let indexPath = indexPath {
+                self.tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        case .update:
+            if let indexPath = indexPath {
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+        case .move:
+            if let indexPath = indexPath , let newIndexPath = newIndexPath {
+                self.tableView.moveRow(at: indexPath, to: newIndexPath)
+            }
+        }
+        
+        self.places = controller.fetchedObjects as! [Place]
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.tableView.endUpdates()
+    }
+    
     
 }
+
+
+
+
+
+
+
+
+
+

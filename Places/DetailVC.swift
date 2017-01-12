@@ -21,15 +21,17 @@ class DetailVC: UIViewController {
         // Do any additional setup after loading the view.
 
         DispatchQueue.main.async { [weak self] in
-            self?.placeImageView.image = self?.place.image
+            self?.placeImageView.image = UIImage(data: self?.place.image as! Data)
             self?.title = self?.place.name
         }
         
         self.tableView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         self.tableView.separatorColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-        
-        self.ratingbutton.setImage(UIImage(named: self.place.rating), for:.normal)
+    
+        if let image = self.place.rating {
+            self.ratingbutton.setImage(UIImage(named: image), for:.normal)
+        }
         
 //        self.tableView.estimatedRowHeight = 44.0
 //        self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -53,7 +55,20 @@ class DetailVC: UIViewController {
             if let rating = reviewVC.ratingSelected {
                 print(rating)
                 self.place.rating = rating
-                self.ratingbutton.setImage(UIImage(named: self.place.rating), for:.normal)
+                if let image = self.place.rating {
+                    self.ratingbutton.setImage(UIImage(named: image), for:.normal)
+                    
+                    //update coredata
+                    if let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
+                        
+                        let context = container.viewContext
+                        do {
+                            try context.save()
+                        } catch {
+                            print("Error: \(error.localizedDescription)")
+                        }
+                    }
+                }
             }
         }
     }
@@ -100,7 +115,7 @@ extension DetailVC: UITableViewDataSource {
             cell.valueLabel.text = self.place.location
         case 3:
             cell.keyLabel.text  = "phone:"
-            cell.valueLabel.text = self.place.telephone
+            cell.valueLabel.text = self.place.phone
         case 4:
             cell.keyLabel.text =  "Web:"
             cell.valueLabel.text = self.place.web
