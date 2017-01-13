@@ -13,7 +13,8 @@ class MainVC: UITableViewController {
     
     var places: [Place] = []
     var fetchResultsController : NSFetchedResultsController<Place>!
-    
+    var searchController: UISearchController!
+    var searchResults: [Place] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +22,17 @@ class MainVC: UITableViewController {
         self.title = "My places"
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.hidesBarsOnSwipe = true
+        
+        self.searchController = UISearchController(searchResultsController: nil)
+        self.tableView.tableHeaderView = self.searchController.searchBar
+        self.searchController.searchBar.placeholder = "Search places"
+        self.searchController.searchBar.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        self.searchController.searchBar.barTintColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        self.searchController.dimsBackgroundDuringPresentation = false
+        //setting the delegate
+        self.searchController.searchResultsUpdater = self
+        
+        
         
         //step 2
         //initialize the fetchresultcontroller 
@@ -82,20 +94,33 @@ class MainVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return places.count
+        
+        if self.searchController.isActive {
+            return self.searchResults.count
+        } else {
+            return places.count
+            
+        }
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+       
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! PlaceCell
         
         // Configure the cell...
-        let place = places[indexPath.row]
+        let place: Place!
+        
+        if self.searchController.isActive {
+            place = self.searchResults[indexPath.row]
+        } else {
+            place = self.places[indexPath.row]
+        }
+        
         cell.titleLabel.text = place.name
         cell.avatarView.image = UIImage(data: place.image as! Data)
-        cell.subTitleLabel.text = place.location
-        cell.thirdLabel.text = place.type
+        cell.subTitleLabel.text = place.type
+        cell.thirdLabel.text = place.location
         
         return cell
     }
@@ -106,23 +131,30 @@ class MainVC: UITableViewController {
     
     
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            self.places.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }
-    }
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        
+//        if editingStyle == .delete {
+//            // Delete the row from the data source
+//            self.places.remove(at: indexPath.row)
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//        } else if editingStyle == .insert {
+//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//        }
+//    }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         
         let shareAction = UITableViewRowAction(style: .default, title: "share") { (action, indexPath) in
             
-            let place = self.places[indexPath.row]
+            let place: Place!
+            
+            if self.searchController.isActive {
+                place = self.searchResults[indexPath.row]
+            } else {
+                place = self.places[indexPath.row]
+            }
+            
             let sharedefaultText = "i like the place of \(place.name)"
             
             let activityController = UIActivityViewController(activityItems: [sharedefaultText,UIImage(data:place.image as! Data)!],applicationActivities: nil)
@@ -162,10 +194,17 @@ class MainVC: UITableViewController {
         if segue.identifier == "showDetail" {
             
             //optional binding
-            if let IndexPath = self.tableView.indexPathForSelectedRow {
-                let selectedPlace = self.places[IndexPath.row]
+            if let indexPath = self.tableView.indexPathForSelectedRow {
+                
+                let place: Place!
+                if self.searchController.isActive {
+                    place = self.searchResults[indexPath.row]
+                } else {
+                    place = self.places[indexPath.row]
+                }
+                
                 let destinationVC = segue.destination as! DetailVC
-                destinationVC.place = selectedPlace
+                destinationVC.place = place
             }
         }
         
@@ -182,6 +221,17 @@ class MainVC: UITableViewController {
         }
     }
     
+    func filterContentFor(textToSearch: String) {
+        
+        self.searchResults = self.places.filter({ (place) -> Bool in
+
+            let nameToFind = place.name.range(of: textToSearch, options: NSString.CompareOptions.caseInsensitive)
+            let typeToFind = place.type.range(of: textToSearch,  options: NSString.CompareOptions.caseInsensitive)
+            let locationToFind = place.location.range(of: textToSearch, options: NSString.CompareOptions.caseInsensitive)
+            
+            return (nameToFind != nil) || (typeToFind != nil) || (locationToFind != nil)
+        })
+    }
 }
 
 
@@ -219,11 +269,18 @@ extension MainVC: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.endUpdates()
     }
-    
-    
 }
 
-
+extension MainVC : UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text {
+            self.filterContentFor(textToSearch: searchText)
+            self.tableView.reloadData()
+        }
+    }
+    
+}
 
 
 
