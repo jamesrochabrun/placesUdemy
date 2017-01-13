@@ -80,6 +80,13 @@ class MainVC: UITableViewController {
         navigationController?.hidesBarsOnSwipe = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let pageVC = storyboard?.instantiateViewController(withIdentifier: "TutorialPageController") as? TutorialPageVC {
+            self.present(pageVC, animated: true , completion: nil)
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         
         super.didReceiveMemoryWarning()

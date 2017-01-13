@@ -120,7 +120,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="259"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="p" translatesAutoresizingMaskIntoConstraints="NO" id="YHc-S7-JLi">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tuto-intro-1" translatesAutoresizingMaskIntoConstraints="NO" id="YHc-S7-JLi">
                                                     <rect key="frame" x="87" y="29" width="200" height="200"/>
                                                 </imageView>
                                             </subviews>
@@ -653,6 +653,94 @@
             </objects>
             <point key="canvasLocation" x="80.799999999999997" y="-64.31784107946028"/>
         </scene>
+        <!--Tutorial PageVC-->
+        <scene sceneID="4rR-cY-00M">
+            <objects>
+                <pageViewController storyboardIdentifier="TutorialPageController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="Be1-iE-tlB" customClass="TutorialPageVC" customModule="Places" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VAp-cg-qnC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="81" y="627"/>
+        </scene>
+        <!--TutorialVC-->
+        <scene sceneID="uyg-bJ-vzY">
+            <objects>
+                <viewController storyboardIdentifier="TutorialController" id="NmK-02-vez" customClass="TutorialVC" customModule="Places" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bj3-3Q-XmK"/>
+                        <viewControllerLayoutGuide type="bottom" id="ktn-h8-nUf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bDG-mo-4Id">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l29-ih-Jrf">
+                                <rect key="frame" x="87" y="28" width="200" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="4Si-1W-0TG"/>
+                                    <constraint firstAttribute="width" constant="200" id="9r7-k6-2kg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tuto-intro-1" translatesAutoresizingMaskIntoConstraints="NO" id="VrM-5K-dyz">
+                                <rect key="frame" x="36" y="97" width="303" height="303"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="VrM-5K-dyz" secondAttribute="height" multiplier="1:1" id="Pyq-uE-NLr"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5df-x4-bjG">
+                                <rect key="frame" x="36" y="415" width="303" height="185"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="303" id="75l-hv-An9"/>
+                                    <constraint firstAttribute="height" constant="185" id="9fP-up-k06"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="bVl-bg-rZp">
+                                <rect key="frame" x="168" y="550" width="39" height="37"/>
+                            </pageControl>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRo-05-4RT">
+                                <rect key="frame" x="313" y="617" width="46" height="30"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <state key="normal" title="Next">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="nextPressed:" destination="NmK-02-vez" eventType="touchUpInside" id="rh1-Mh-xnv"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="ktn-h8-nUf" firstAttribute="top" secondItem="uRo-05-4RT" secondAttribute="bottom" constant="20" id="O4N-Xz-mNT"/>
+                            <constraint firstItem="uRo-05-4RT" firstAttribute="trailing" secondItem="bDG-mo-4Id" secondAttribute="trailingMargin" id="SA8-U0-tnv"/>
+                            <constraint firstItem="5df-x4-bjG" firstAttribute="top" secondItem="VrM-5K-dyz" secondAttribute="bottom" constant="15" id="VJH-YD-YFq"/>
+                            <constraint firstItem="VrM-5K-dyz" firstAttribute="leading" secondItem="bDG-mo-4Id" secondAttribute="leadingMargin" constant="20" id="Y6P-IV-Ikh"/>
+                            <constraint firstItem="ktn-h8-nUf" firstAttribute="top" secondItem="bVl-bg-rZp" secondAttribute="bottom" constant="80" id="aNZ-Gp-RA7"/>
+                            <constraint firstItem="5df-x4-bjG" firstAttribute="leading" secondItem="bDG-mo-4Id" secondAttribute="leadingMargin" constant="20" id="gdJ-up-z6o"/>
+                            <constraint firstItem="bVl-bg-rZp" firstAttribute="centerX" secondItem="bDG-mo-4Id" secondAttribute="centerX" id="iwm-zQ-yiQ"/>
+                            <constraint firstItem="l29-ih-Jrf" firstAttribute="top" secondItem="bj3-3Q-XmK" secondAttribute="bottom" constant="8" id="mdh-Ep-Nrt"/>
+                            <constraint firstItem="VrM-5K-dyz" firstAttribute="top" secondItem="l29-ih-Jrf" secondAttribute="bottom" constant="19" id="n0V-Ny-Pbm"/>
+                            <constraint firstItem="l29-ih-Jrf" firstAttribute="centerX" secondItem="bDG-mo-4Id" secondAttribute="centerX" id="pvU-5T-MmE"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="5df-x4-bjG" secondAttribute="trailing" constant="20" id="qav-jp-SfA"/>
+                            <constraint firstItem="VrM-5K-dyz" firstAttribute="trailing" secondItem="bDG-mo-4Id" secondAttribute="trailingMargin" constant="-20" id="t3A-Dv-9h5"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="contentImageview" destination="VrM-5K-dyz" id="ZOF-G2-jym"/>
+                        <outlet property="contentLabel" destination="5df-x4-bjG" id="VvS-TL-cy9"/>
+                        <outlet property="nextButton" destination="uRo-05-4RT" id="VWv-zU-BGk"/>
+                        <outlet property="titleLabel" destination="l29-ih-Jrf" id="wSu-ZC-v6T"/>
+                        <outlet property="tutorialControl" destination="bVl-bg-rZp" id="SZv-df-saf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d6g-yd-irX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="80.799999999999997" y="1302.9985007496252"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="WgJ-Il-4gM">
             <objects>
@@ -677,6 +765,6 @@
         <image name="dislike" width="64" height="64"/>
         <image name="good" width="128" height="128"/>
         <image name="great" width="128" height="128"/>
-        <image name="p" width="128" height="128"/>
+        <image name="tuto-intro-1" width="128" height="128"/>
     </resources>
 </document>
