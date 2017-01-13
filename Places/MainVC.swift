@@ -50,6 +50,14 @@ class MainVC: UITableViewController {
             do {
                 try fetchResultsController.performFetch()
                 self.places = fetchResultsController.fetchedObjects!
+                
+                //HERE WE CAN SOLVE THE THING FOR JSON REQUESTS AND COREDATA ETC
+//                let defaults = UserDefaults.standard
+//                if !defaults.bool(forKey: "hasLoadedData") {
+//                    //loadData
+//                    defaults.set(true, forKey: "hasLoadedData")
+//                }
+                                
             } catch {
                 print("Error: \(error.localizedDescription)")
             }
@@ -82,6 +90,13 @@ class MainVC: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        let defaults = UserDefaults.standard
+        let hasViewdTutorial = defaults.bool(forKey: "hasViewedTutorial")
+        if hasViewdTutorial {
+            return
+        }
+        
         if let pageVC = storyboard?.instantiateViewController(withIdentifier: "TutorialPageController") as? TutorialPageVC {
             self.present(pageVC, animated: true , completion: nil)
         }

@@ -50,6 +50,9 @@ class TutorialVC: UIViewController {
             let pageVC = parent as! TutorialPageVC
             pageVC.forward(toIndex: self.tutorialStep.index)
         case 2:
+            let defaults = UserDefaults.standard
+            defaults.set(true, forKey: "hasViewedTutorial")
+            
             self.dismiss(animated: true, completion: nil)
         default:
             break
