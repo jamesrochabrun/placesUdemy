@@ -18,11 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        self.customize()
+        self.customizeNavBar()
+        self.customizeTabBar()
         return true
     }
 
-    func customize()  {
+    func customizeNavBar()  {
         
         UINavigationBar.appearance().tintColor = #colorLiteral(red: 0.5091350079, green: 0.9878887534, blue: 0.8044660687, alpha: 1)
         UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
@@ -32,7 +33,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                 NSFontAttributeName:barFont]
         }
     }
+    
+    func customizeTabBar() {
+        UITabBar.appearance().tintColor = #colorLiteral(red: 0.5091350079, green: 0.9878887534, blue: 0.8044660687, alpha: 1)
+        UITabBar.appearance().barTintColor = UIColor.black
+        UITabBar.appearance().selectionIndicatorImage = #imageLiteral(resourceName: "tabbaritem-selected")
         
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

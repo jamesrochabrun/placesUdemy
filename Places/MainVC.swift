@@ -227,9 +227,9 @@ class MainVC: UITableViewController {
                 
                 let destinationVC = segue.destination as! DetailVC
                 destinationVC.place = place
+                destinationVC.hidesBottomBarWhenPushed = true
             }
         }
-        
     }
     
     @IBAction func unwindToMainVC(segue: UIStoryboardSegue) {

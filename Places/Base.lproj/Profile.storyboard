@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="M9s-us-jtQ">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Profile-->
+        <scene sceneID="apn-M6-RsR">
+            <objects>
+                <tableViewController id="Lg6-h6-DLZ" customClass="ProfileVC" customModule="Places" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="1cq-ke-eTe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <imageView key="tableHeaderView" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="6Dh-im-lqR">
+                            <rect key="frame" x="0.0" y="64" width="375" height="160"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.4549019608" green="1" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                        </imageView>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="profileCell" textLabel="waX-0k-lyj" style="IBUITableViewCellStyleDefault" id="5bn-om-MEO">
+                                <rect key="frame" x="0.0" y="188" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5bn-om-MEO" id="ugB-wi-xgf">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="waX-0k-lyj">
+                                            <rect key="frame" x="15" y="0.0" width="345" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Lg6-h6-DLZ" id="tvb-mj-O6M"/>
+                            <outlet property="delegate" destination="Lg6-h6-DLZ" id="si6-bv-JQt"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Profile" id="WJO-WY-5yd"/>
+                    <connections>
+                        <segue destination="ZCi-Wf-H2b" kind="show" identifier="showWeb" id="BAS-eB-rqY"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MyM-PI-M7Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-887" y="627"/>
+        </scene>
+        <!--Web ViewVC-->
+        <scene sceneID="E2G-rS-BFy">
+            <objects>
+                <viewController id="ZCi-Wf-H2b" customClass="WebViewVC" customModule="Places" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ppC-K0-bfw"/>
+                        <viewControllerLayoutGuide type="bottom" id="kbz-d4-WYo"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9cr-wx-b8u">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1H-iU-tWO">
+                                <rect key="frame" x="16" y="64" width="343" height="554"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="kbz-d4-WYo" firstAttribute="top" secondItem="y1H-iU-tWO" secondAttribute="bottom" id="LL8-7J-K1D"/>
+                            <constraint firstItem="y1H-iU-tWO" firstAttribute="top" secondItem="ppC-K0-bfw" secondAttribute="bottom" id="c10-HH-ODB"/>
+                            <constraint firstItem="y1H-iU-tWO" firstAttribute="trailing" secondItem="9cr-wx-b8u" secondAttribute="trailingMargin" id="eei-3X-3d3"/>
+                            <constraint firstItem="y1H-iU-tWO" firstAttribute="leading" secondItem="9cr-wx-b8u" secondAttribute="leadingMargin" id="pvR-LU-8WG"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webview" destination="y1H-iU-tWO" id="wrt-57-CYu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9tN-eP-Dlf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-63.200000000000003" y="658.92053973013503"/>
+        </scene>
+        <!--Profile-->
+        <scene sceneID="Ibo-6y-CTF">
+            <objects>
+                <navigationController id="M9s-us-jtQ" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Profile" image="about-us" id="1Wj-vI-MQ7"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="yQM-Cn-Opq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Lg6-h6-DLZ" kind="relationship" relationship="rootViewController" id="Uf3-pf-tda"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FDd-BJ-R7Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1586" y="627"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="about-us" width="25" height="25"/>
+    </resources>
+</document>

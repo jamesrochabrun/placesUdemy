@@ -47,6 +47,8 @@ class DetailVC: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.hidesBarsOnSwipe = false
         navigationController?.setNavigationBarHidden(false, animated: true)
+        self.hidesBottomBarWhenPushed = true
+
     }
     
     @IBAction func close(segue: UIStoryboardSegue) {
