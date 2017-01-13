@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MessageUI
 
 class DetailVC: UIViewController {
 
@@ -134,12 +135,77 @@ extension DetailVC: UITableViewDelegate {
         case 2:
             //geolocation stuf
             self.performSegue(withIdentifier: "showMap", sender: nil)
+        case 3:
+            //send SMS
+            let alertController = UIAlertController(title: "SMS", message: "send sms to...\(self.place.name)", preferredStyle: .actionSheet)
+            let smsAction = UIAlertAction(title: "SMS", style: .default, handler: { (action) in
+                self.sendSMS()
+            })
+            alertController.addAction(smsAction)
             
+            let callAction = UIAlertAction(title: "Call", style: .default, handler: { (action) in
+                self.callPhone()
+            })
+            alertController.addAction(callAction)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+                
+            })
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true, completion: nil)
+        case 4:
+            //open website
+            if let websiteURL = self.place.web {
+                if let url = URL(string: websiteURL) {
+                    let app = UIApplication.shared
+                    if app.canOpenURL(url) {
+                        app.open(url, options: [:], completionHandler: nil)
+                    }
+                }
+            }
         default:
             break
         }
     }
     
+    func goToWeb() {
+        
+    }
+    
+    func callPhone() {
+        if let phoneNumber = self.place.phone {
+            if let phoneURL = URL(string: "tel://\(phoneNumber)") {
+                let app = UIApplication.shared
+                if app.canOpenURL(phoneURL) {
+                    app.open(phoneURL, options: [:], completionHandler: nil)
+                }
+            }
+        }
+    }
+    
+    func sendSMS() {
+        if MFMessageComposeViewController.canSendText() {
+            let message = "Hi this is a message"
+            let msgVC = MFMessageComposeViewController()
+            msgVC.body = message
+            msgVC.messageComposeDelegate = self
+            if let phone = self.place.phone {
+                msgVC.recipients = [phone]
+            }
+            self.present(msgVC, animated: true, completion: nil)
+        }
+        
+    }
+    
+}
+
+extension DetailVC : MFMessageComposeViewControllerDelegate {
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        
+        print(result)
+        controller.dismiss(animated: true, completion: nil)
+        
+    }
 }
 
 
