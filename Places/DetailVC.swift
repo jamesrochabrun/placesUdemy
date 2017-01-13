@@ -154,21 +154,21 @@ extension DetailVC: UITableViewDelegate {
             self.present(alertController, animated: true, completion: nil)
         case 4:
             //open website
-            if let websiteURL = self.place.web {
-                if let url = URL(string: websiteURL) {
-                    let app = UIApplication.shared
-                    if app.canOpenURL(url) {
-                        app.open(url, options: [:], completionHandler: nil)
-                    }
-                }
-            }
+            self.goToWeb()
         default:
             break
         }
     }
     
     func goToWeb() {
-        
+        // if let websiteURL = self.place.web {
+        if let url = URL(string: "https://www.facebook.com/") {
+            let app = UIApplication.shared
+            if app.canOpenURL(url) {
+                app.open(url, options: [:], completionHandler: nil)
+            }
+            //  }
+        }
     }
     
     func callPhone() {
