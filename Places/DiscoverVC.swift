@@ -12,6 +12,7 @@ import CloudKit
 class DiscoverVC: UITableViewController {
     
     var places: [CKRecord] = []
+    var imageCache: NSCache = NSCache<CKRecordID, NSURL>()
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
@@ -28,12 +29,8 @@ class DiscoverVC: UITableViewController {
         self.view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         self.loadDataFromICloud()
-        
-        
     }
 
-
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -54,7 +51,7 @@ class DiscoverVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-
+        
         // Configure the cell...
         let place = self.places[indexPath.row]
         if let name = place.object(forKey: "name") as? String {
@@ -63,40 +60,42 @@ class DiscoverVC: UITableViewController {
         
         //Lazy loading images
         cell.imageView?.image = #imageLiteral(resourceName: "p")
-        let publicDB = CKContainer.default().publicCloudDatabase
-        let fetchImageOperation = CKFetchRecordsOperation(recordIDs: [place.recordID])
-        fetchImageOperation.desiredKeys = ["image"]
-        fetchImageOperation.queuePriority = .veryHigh
-        fetchImageOperation.perRecordCompletionBlock = { (record, recordId, error) in
-            
-            if error != nil {
-                print(error)
-                return
-            }
-            if let record = record {
-                
-                OperationQueue.main.addOperation({
-                    if let image = record.object(forKey: "image") as? CKAsset {
-                        let imageAsset = image
-                        do {
-                            try cell.imageView?.image = UIImage(data: Data(contentsOf: imageAsset.fileURL))
-                        } catch {
-                        }
-                    }
-                })
-            }
-        }
         
-        publicDB.add(fetchImageOperation)
-//        if let image = place.object(forKey: "image") as? CKAsset {
-//            let imageAsset = image
-//            do {
-//                try cell.imageView?.image = UIImage(data: Data(contentsOf: imageAsset.fileURL))
-//            } catch {
-//                
-//            }
-//        }
-
+        //Cache images
+        //get from cache if exists
+        if let imageFileURL = self.imageCache.object(forKey: place.recordID) {
+            do {
+                print("image loaded from cache")
+                try cell.imageView?.image = UIImage(data: Data(contentsOf: imageFileURL as URL))
+            } catch {
+            }
+        } else { //create and save in cache
+            let publicDB = CKContainer.default().publicCloudDatabase
+            let fetchImageOperation = CKFetchRecordsOperation(recordIDs: [place.recordID])
+            fetchImageOperation.desiredKeys = ["image"]
+            fetchImageOperation.queuePriority = .veryHigh
+            fetchImageOperation.perRecordCompletionBlock = { (record, recordId, error) in
+                
+                if error != nil {
+                    print(error)
+                    return
+                }
+                if let record = record {
+                    OperationQueue.main.addOperation({
+                        if let image = record.object(forKey: "image") as? CKAsset {
+                            let imageAsset = image
+                            //save in cache
+                            self.imageCache.setObject(imageAsset.fileURL as NSURL, forKey: place.recordID)
+                            do {
+                                try cell.imageView?.image = UIImage(data: Data(contentsOf: imageAsset.fileURL))
+                            } catch {
+                            }
+                        }
+                    })
+                }
+            }
+            publicDB.add(fetchImageOperation)
+        }
         return cell
     }
  
@@ -167,7 +166,7 @@ extension DiscoverVC {
         let queryOperation = CKQueryOperation(query: query)
         queryOperation.desiredKeys = ["name"]
         queryOperation.queuePriority = .veryHigh
-        queryOperation.resultsLimit = 25
+        queryOperation.resultsLimit = 1
         queryOperation.recordFetchedBlock = { (record: CKRecord?) in
             if let record = record {
                 self.places.append(record)
