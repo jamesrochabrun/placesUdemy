@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CloudKit
 
 class AddPlaceVC: UITableViewController, UITextFieldDelegate {
 
@@ -53,7 +54,6 @@ class AddPlaceVC: UITableViewController, UITextFieldDelegate {
     
     @IBAction func savePressed(_ sender: UIBarButtonItem) {
         
-        
         if let name = self.textfieldName.text,
             let type = self.textfieldType.text,
             let direction = self.textfieldAddress.text,
@@ -92,6 +92,25 @@ class AddPlaceVC: UITableViewController, UITextFieldDelegate {
             alertController.addAction(ok)
             self.present(alertController, animated: true, completion: nil)
         }
+    }
+    
+    //save in icloud
+    func savePlaceToIcloud(place: Place!) {
+        
+        let record = CKRecord(recordType: "Place")
+        record.setValue(place.name, forKey: "name")
+        record.setValue(place.type, forKey: "type")
+        record.setValue(place.location, forKey: "location")
+        record.setValue(place.phone, forKey: "phone")
+        record.setValue(place.web, forKey: "web")
+        
+        if let originalImage = UIImage(data: place.image as! Data) {
+            let scaleFactor = (originalImage.size.width > 1024) ? 1024/originalImage.size.width : 1.0
+            let scaledImage = UIImage(data: place.image as! Data, scale: scaleFactor)
+            
+            
+        }
+        
         
     }
     
