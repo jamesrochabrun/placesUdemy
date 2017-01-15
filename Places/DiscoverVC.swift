@@ -13,6 +13,8 @@ class DiscoverVC: UITableViewController {
     
     var places: [CKRecord] = []
     var imageCache: NSCache = NSCache<CKRecordID, NSURL>()
+    var lastCursor: CKQueryCursor?
+    var hasLoadedInfo: Bool = false
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
@@ -28,6 +30,14 @@ class DiscoverVC: UITableViewController {
         activityIndicator.center = self.view.center
         self.view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
+        
+        //pull to refresh
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl?.tintColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        self.refreshControl?.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        self.refreshControl?.addTarget(self, action: #selector(self.loadDataFromICloud), for: .valueChanged)
+        
+        
         self.loadDataFromICloud()
     }
 
@@ -153,8 +163,8 @@ extension DiscoverVC {
     func loadDataFromICloud() {
         
         //API Operational
-        self.places.removeAll()
-        self.tableView.reloadData()
+//        self.places.removeAll()
+//        self.tableView.reloadData()
         ///////////////////////////
         
         let iCloudContainer = CKContainer.default()
@@ -167,6 +177,18 @@ extension DiscoverVC {
         queryOperation.desiredKeys = ["name"]
         queryOperation.queuePriority = .veryHigh
         queryOperation.resultsLimit = 1
+        
+        if self.lastCursor != nil {
+            queryOperation.cursor = self.lastCursor
+        } else if hasLoadedInfo {
+            
+            //we can add an alert here to say no more data available
+            self.refreshControl?.endRefreshing()
+            return
+            //this avoids to get more data
+//            self.places.removeAll()
+//            self.tableView.reloadData()
+        }
         queryOperation.recordFetchedBlock = { (record: CKRecord?) in
             if let record = record {
                 self.places.append(record)
@@ -180,7 +202,12 @@ extension DiscoverVC {
                 return
             }
             
+            //paging with the cursor
+            self.hasLoadedInfo = true
+            self.lastCursor = cursor
+            
             OperationQueue.main.addOperation({
+                self.refreshControl?.endRefreshing()
                 self.activityIndicator.stopAnimating()
                 self.tableView.reloadData()
             })
