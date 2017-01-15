@@ -12,6 +12,8 @@ import CloudKit
 class DiscoverVC: UITableViewController {
     
     var places: [CKRecord] = []
+    
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +23,13 @@ class DiscoverVC: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.center = self.view.center
+        self.view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
         self.loadDataFromICloud()
+        
+        
     }
 
 
@@ -52,14 +60,42 @@ class DiscoverVC: UITableViewController {
         if let name = place.object(forKey: "name") as? String {
             cell.textLabel?.text = name
         }
-        if let image = place.object(forKey: "image") as? CKAsset {
-            let imageAsset = image
-            do {
-                try cell.imageView?.image = UIImage(data: Data(contentsOf: imageAsset.fileURL))
-            } catch {
+        
+        //Lazy loading images
+        cell.imageView?.image = #imageLiteral(resourceName: "p")
+        let publicDB = CKContainer.default().publicCloudDatabase
+        let fetchImageOperation = CKFetchRecordsOperation(recordIDs: [place.recordID])
+        fetchImageOperation.desiredKeys = ["image"]
+        fetchImageOperation.queuePriority = .veryHigh
+        fetchImageOperation.perRecordCompletionBlock = { (record, recordId, error) in
+            
+            if error != nil {
+                print(error)
+                return
+            }
+            if let record = record {
                 
+                OperationQueue.main.addOperation({
+                    if let image = record.object(forKey: "image") as? CKAsset {
+                        let imageAsset = image
+                        do {
+                            try cell.imageView?.image = UIImage(data: Data(contentsOf: imageAsset.fileURL))
+                        } catch {
+                        }
+                    }
+                })
             }
         }
+        
+        publicDB.add(fetchImageOperation)
+//        if let image = place.object(forKey: "image") as? CKAsset {
+//            let imageAsset = image
+//            do {
+//                try cell.imageView?.image = UIImage(data: Data(contentsOf: imageAsset.fileURL))
+//            } catch {
+//                
+//            }
+//        }
 
         return cell
     }
@@ -117,13 +153,50 @@ extension DiscoverVC {
     
     func loadDataFromICloud() {
         
+        //API Operational
+        self.places.removeAll()
+        self.tableView.reloadData()
+        ///////////////////////////
+        
         let iCloudContainer = CKContainer.default()
         let publicDB = iCloudContainer.publicCloudDatabase
         let predicate = NSPredicate(value: true)
         let query = CKQuery(recordType: "Place", predicate: predicate)
         
+        //API Operational load data
+        let queryOperation = CKQueryOperation(query: query)
+        queryOperation.desiredKeys = ["name"]
+        queryOperation.queuePriority = .veryHigh
+        queryOperation.resultsLimit = 25
+        queryOperation.recordFetchedBlock = { (record: CKRecord?) in
+            if let record = record {
+                self.places.append(record)
+            }
+        }
+        
+        queryOperation.queryCompletionBlock = { cursor, error in
+            
+            if error != nil {
+                print(error?.localizedDescription)
+                return
+            }
+            
+            OperationQueue.main.addOperation({
+                self.activityIndicator.stopAnimating()
+                self.tableView.reloadData()
+            })
+        }
+        publicDB.add(queryOperation)
+        
+        //cursor is for pagination, tells you where is the request stage at this moment is 25 first ones
+
+    
+        //API Convenience
+        /*
         publicDB.perform(query, inZoneWith: nil) { [weak self] (results, error) in
             print("consult complete")
+            
+            
             if error != nil {
                 print(error!.localizedDescription)
                 return
@@ -139,6 +212,7 @@ extension DiscoverVC {
 //                }
             }
         }
+       */
     }
 }
 
