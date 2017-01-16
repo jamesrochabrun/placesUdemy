@@ -124,6 +124,7 @@ extension DiscoverVC {
         let publicDB = iCloudContainer.publicCloudDatabase
         let predicate = NSPredicate(value: true)
         let query = CKQuery(recordType: "Place", predicate: predicate)
+        query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         
         //API Operational load data
         let queryOperation = CKQueryOperation(query: query)
