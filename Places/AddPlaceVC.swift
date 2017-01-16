@@ -75,6 +75,9 @@ class AddPlaceVC: UITableViewController, UITextFieldDelegate {
                 self.place?.web = website
                 self.place?.rating = rating
                 self.place?.image = UIImagePNGRepresentation(image) as NSData?
+                
+                //saving in icloud
+                self.savePlaceToIcloud(place: self.place)
 
                 do {
                     try context.save()
@@ -92,26 +95,6 @@ class AddPlaceVC: UITableViewController, UITextFieldDelegate {
             alertController.addAction(ok)
             self.present(alertController, animated: true, completion: nil)
         }
-    }
-    
-    //save in icloud
-    func savePlaceToIcloud(place: Place!) {
-        
-        let record = CKRecord(recordType: "Place")
-        record.setValue(place.name, forKey: "name")
-        record.setValue(place.type, forKey: "type")
-        record.setValue(place.location, forKey: "location")
-        record.setValue(place.phone, forKey: "phone")
-        record.setValue(place.web, forKey: "web")
-        
-        if let originalImage = UIImage(data: place.image as! Data) {
-            let scaleFactor = (originalImage.size.width > 1024) ? 1024/originalImage.size.width : 1.0
-            let scaledImage = UIImage(data: place.image as! Data, scale: scaleFactor)
-            
-            
-        }
-        
-        
     }
     
     @IBAction func reatingPressed(_ sender: UIButton) {
@@ -171,14 +154,76 @@ extension AddPlaceVC: UIImagePickerControllerDelegate, UINavigationControllerDel
         
         dismiss(animated: true, completion: nil)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
+
+//save in iCloud
+
+extension AddPlaceVC {
+    
+    //save in icloud
+    func savePlaceToIcloud(place: Place!) {
+        
+        let record = CKRecord(recordType: "Place")
+        record.setValue(place.name, forKey: "name")
+        record.setValue(place.type, forKey: "type")
+        record.setValue(place.location, forKey: "location")
+        record.setValue(place.phone, forKey: "phone")
+        record.setValue(place.web, forKey: "web")
+        
+        if let originalImage = UIImage(data: place.image as! Data) {
+            //scaling image
+            let scaleFactor = (originalImage.size.width > 1024) ? 1024/originalImage.size.width : 1.0
+            if  let scaledImage = UIImage(data: place.image as! Data, scale: scaleFactor) {
+                
+                //creating the path
+                let documentsDirectory = self.getDocumentsDirectory()
+                let imagePath = documentsDirectory.appendingPathComponent(place.name)
+                
+                do{
+                    if let imageJPEG = UIImageJPEGRepresentation(scaledImage, 0.8) {
+                        try imageJPEG.write(to: imagePath, options: [.atomicWrite])
+                    }
+                    
+                    let imageAsset = CKAsset(fileURL: imagePath)
+                    record.setValue(imageAsset, forKey: "image")
+                    
+                    //saving in iCLoud
+                    let publicDB = CKContainer.default().publicCloudDatabase
+                    publicDB.save(record, completionHandler: { (record, error) in
+                        
+                        if error != nil {
+                            print(error)
+                        }
+                        do {
+                            try FileManager.default.removeItem(at: imagePath)
+                        } catch {
+                            print("error saving in icloud")
+                        }
+                    })//save in icloud
+                } catch {
+                    print("error to write")
+                }//path
+            }//scale image
+        }//if image exists
+    }
+
+    
+    //this returns the URL
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
+}
+
+    
+    
+
+
+
+
+
+
+
+
+
